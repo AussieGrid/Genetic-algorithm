@@ -20,13 +20,13 @@ class Bot:
 
     def __init__(self, genes):
         """Bot constructor - 'genes sequence' of a particular Bot created by a User"""
-        """конструктор Bot - созданная Пользователем "последовательность генов" для отдельного бота"""
+        """Конструктор Bot - созданная Пользователем "последовательность генов" для отдельного бота"""
 
         self._genes = genes[:]
 
     def __init__(self, number_of_genes, max_value, min_value, target, eps):
         """ Bot constructor overload - creates 'genes' for a bot in random manner"""
-        """ перегрузка конструктора Bot - создает "гены" для ботов рандомно"""
+        """ Перегрузка конструктора Bot - создает "гены" для ботов рандомно"""
 
         self._target = target
         self._eps = eps
@@ -36,8 +36,9 @@ class Bot:
             self._genes[i] = max_value * __x_value + (1 - __x_value) * min_value
 
     def get_fitness(self):
-        """ Calculates fitness and checks if bot`s genes meet conditions of precision (eps)"""
-        """ Расчет разности между значением уравнения с генами и целью и Проверка, подходит ли набор генов бота для нужной точности"""
+        """ Calculates difference between expression with genes and target then checks if it meets conditions of precision (eps)"""
+        """ Расчет разности между выражением с подставленными генами и необходимым значением (целью), 
+            и проверка, подходит ли набор генов бота для нужной точности"""
 
         fitness = abs(self._genes[0] + 2 * self._genes[1] + 3 * self._genes[3] + 4 * self._genes[4] - self._target)
         if fitness <= self._eps:
@@ -45,8 +46,8 @@ class Bot:
         return fitness
 
     def mutation(self):
-        """ mutate bot - change genes of one a little"""
-        """ мутация бота - немножко меняются значения его генов"""
+        """ Mutate bot - change genes of one a little"""
+        """ Мутация бота - немножко меняются значения его генов"""
 
         __r_value = random.random(10)
         __p_value = random.random(100)
@@ -55,8 +56,8 @@ class Bot:
             self._genes[i] = self._genes[i] * (1 - pow(-1, __r_value) * __p_value / 1000)
 
     def selection(self, father_bot):
-        """ interbreed two bots (mamas'n'papas) to create a new one"""
-        """ скрестить двух ботов (папа и мама), чтобы получить нового"""
+        """ Interbreed two bots (mamas'n'papas) by spliting their genes into 2 pieces each to create a new one"""
+        """ Скрестить двух ботов (папа и мама), разрезанием каждого на 2 части, чтобы получить нового"""
 
         _father_bot = father_bot #_myfather=Bot(self.genes)
         _child_bot = Bot(self._genes) #_myfather.assign_bot(_father_bot)
@@ -82,9 +83,9 @@ class Bot:
         return child_bot
 
     def assign_bot(self, jango_fett_bot):
-        """ bot colning - assigning parameters of Jango-bot to clone bot"""
+        """ Bot colning - assigning parameters of Jango-bot to clone bot"""
         """ 200'000 units are ready with a million more on a way"""
-        """ клонирование бота - присвоение значений параметров Джанго-бота клонам"""
+        """ Клонирование бота - присвоение значений параметров Джанго-бота клону"""
         """ 200000 единиц уже готовы, миллион на подходе"""
 
         self._target = jango_fett_bot._target
@@ -96,8 +97,8 @@ class Bot:
             self._genes[i] = jango_fett_bot._genes[i]
 
     def dead(self):
-        """ kill a bot"""
-        """ убивает бота"""
+        """ Kill a bot"""
+        """ Убивает бота"""
 
         for i in range(self.number_of_genes):
             self._genes[i] = -1
@@ -115,8 +116,8 @@ class Population:
     winner_bot: Bot
 
     def __init__(self, count_bots, max_age, number_of_genes, max_value, min_value, number_of_good, target, eps):
-        """ create a population of bots"""
-        """ создает стадо ботов"""
+        """ Create a population of bots"""
+        """ Создает стадо ботов"""
 
         _number_of_good = number_of_good
         _max_age = max_age
@@ -125,17 +126,17 @@ class Population:
             self.bots.append(Bot(number_of_genes, max_value, min_value, target, eps))
 
     def genocide_population(self):
-        """ kill the whole population of bots. Not just the man but the women and the children too"""
-        """ убить все стадо ботов. Не только мужчин,но и женщин, и детей тоже"""
+        """ Kill the whole population of bots. Not just the man but the women and the children too"""
+        """ Убить все стадо ботов. Не только мужчин,но и женщин, и детей тоже"""
 
         for i in range(self._number_of_good, len(self.bots)):
             self.bots[i].dead()
 
     def mutation_population(self):
-        """ mutate 'good' bots in population"""
-        """ мутация "хороших" ботов из стада"""
+        """ Mutate 'good' bots in population"""
+        """ Мутация "хороших" ботов из стада"""
 
-        for i in range(self._number_of_good, len(self.bots)):
+        for i in range(self._number_of_good):
             self.bots[i].mutation()
 
     def evolution_chamber(self):
@@ -166,6 +167,9 @@ class Population:
         self.resurrection_population()
 
     def execute_population(self):
+        """ Returns winner bot - the one with the best fitness which meets eps"""
+        """ Возвращает бота-победителя: у него наименьший fitness и он проходит по точности"""
+
         __result: Bot = Bot(4, 1, 1, 1, 0.1)
 
         for i in range(1, self._max_age):
@@ -177,6 +181,9 @@ class Population:
         return __result
 
     def resurrection_population(self):
+        """ Creates children of survived strong bots and puts them in the remaining slots of population"""
+        """ Создает детей выживших сильных ботов и забивает их в свободные слоты стада"""
+
         for i in range(self._number_of_good, len(self.bots)):
             __x_value = random.random(self._number_of_good - 1)
             __y_value = random.random(self._number_of_good - 1)
@@ -184,6 +191,9 @@ class Population:
             self.bots[i].assign_bot(self.bots[__x_value].Selection(self.bots[__y_value]))
 
     def sort_fitness(self):
+        """ Sort bots population with bubble-method in ascending order (fitness)"""
+        """ Сортирует пузырьком ботов в стаде по возрастанию (по fitness)"""
+
         _bot = Bot()
         _m = len(self.bots)
         for i in range(_m):
