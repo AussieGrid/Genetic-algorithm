@@ -204,6 +204,18 @@ class Population:
                     self.bots[j+1].assign_bot(_bot)
 
 
-popul = Population(1000, 50, 4, 30, 0, 200, 0, pow(10, -5))
+number_of_bots = 1000
+maximum_age = 50
+count_genes = 4
+maximum_value = 30
+minimum_value = 0
+no_of_good = 200
+est_target = 0
+est_eps = pow(10, -5)
 
-print(popul.execute_population())
+popul = Population(number_of_bots, maximum_age, count_genes, maximum_value, minimum_value, no_of_good, est_target, est_eps)
+
+for i in range(count_genes):
+    print(popul.execute_population()._genes[i])
+
+print(popul.execute_population().fitness)
