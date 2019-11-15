@@ -33,7 +33,7 @@ class Bot:
 
         for i in range(number_of_genes):
             __x_value = random.random()
-            self._genes[i] = max_value * __x_value + (1 - __x_value) * min_value
+            self._genes.append(max_value * __x_value + (1 - __x_value) * min_value)
 
     def get_fitness(self):
         """ Calculates difference between expression with genes and target then checks if it meets conditions of precision (eps)"""
