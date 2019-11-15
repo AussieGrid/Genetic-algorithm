@@ -206,4 +206,4 @@ class Population:
 
 popul = Population(1000, 50, 4, 30, 0, 200, 0, pow(10, -5))
 
-popul.execute_population()
+print(popul.execute_population())
